@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
+import android.widget.ImageView;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -23,6 +25,7 @@ public class Main extends AppCompatActivity {
             return insets;
         });
 
+        // Balance Button
         Button buttonBalance = findViewById(R.id.buttonBalance);
         buttonBalance.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,8 +35,9 @@ public class Main extends AppCompatActivity {
             }
         });
 
+        // Resumen Button
         Button buttonResumen = findViewById(R.id.buttonResumen);
-        buttonBalance.setOnClickListener(new View.OnClickListener() {
+        buttonResumen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Main.this, Resumen.class);
@@ -41,8 +45,9 @@ public class Main extends AppCompatActivity {
             }
         });
 
+        // Presupuesto Button
         Button buttonPresupuesto = findViewById(R.id.buttonPresupuesto);
-        buttonBalance.setOnClickListener(new View.OnClickListener() {
+        buttonPresupuesto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Main.this, Presupuesto.class);
@@ -50,6 +55,15 @@ public class Main extends AppCompatActivity {
             }
         });
 
+        // Imagen Button
+        ImageView imageUser = findViewById(R.id.imageUser);
+        imageUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Crear el intento para abrir la actividad Login
+                Intent intent = new Intent(Main.this, Login.class);
+                startActivity(intent);  // Iniciar la actividad Login
+            }
+        });
     }
-
 }
