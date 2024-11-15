@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "593551747480",
+    "project_id": "stonks-84f61",
+    "storage_bucket": "stonks-84f61.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593551747480:android:c28885c553c80f3b8e23ed",
+        "android_client_info": {
+          "package_name": "com.example.stonks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "593551747480-7v1b8fuatlfmusddp580nhqs1m7ebn0h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRKcD35fuJ9oZCJ-3yJL3h-385dbDizx8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "593551747480-7v1b8fuatlfmusddp580nhqs1m7ebn0h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

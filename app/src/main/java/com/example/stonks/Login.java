@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -15,13 +16,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class Login extends AppCompatActivity {
 
-    private Button buttonBack; // Botón de retroceder
-    private Button buttonLogin; // Botón de inicio de sesión
-    private EditText editTextEmail; // EditText para correo electrónico
-    private EditText editTextPassword; // EditText para contraseña
-    private CheckBox checkBoxShowPassword; // CheckBox para mostrar/ocultar contraseña
+    private Button buttonBack;
+    private Button buttonLogin;
+    private EditText editTextEmail;
+    private EditText editTextPassword;
+    private CheckBox checkBoxShowPassword;
+    private FirebaseAuth auth;
+    private TextView textViewSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,29 +41,35 @@ public class Login extends AppCompatActivity {
             return insets;
         });
 
-        buttonBack = findViewById(R.id.buttonBack); // Inicializamos el botón de retroceder
-        buttonLogin = findViewById(R.id.buttonLogin); // Inicializamos el botón de inicio de sesión
-        editTextEmail = findViewById(R.id.editTextEmail); // Inicializamos EditText para el correo
-        editTextPassword = findViewById(R.id.editTextPassword); // Inicializamos EditText para la contraseña
-        checkBoxShowPassword = findViewById(R.id.checkBoxShowPassword); // Inicializamos CheckBox
+        buttonBack = findViewById(R.id.buttonBack);
+        buttonLogin = findViewById(R.id.buttonLogin);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
+        checkBoxShowPassword = findViewById(R.id.checkBoxShowPassword);
+        textViewSignUp = findViewById(R.id.textViewSignUp);
+
+        auth = FirebaseAuth.getInstance();  // Inicializa FirebaseAuth
 
         // Función para regresar a la actividad MainActivity
         buttonBack.setOnClickListener(v -> {
             Intent intent = new Intent(Login.this, Main.class);
             startActivity(intent);
-            finish(); // Cierra la actividad actual
+            finish();
+        });
+
+        // Configura el evento para el TextView de registro
+        textViewSignUp.setOnClickListener(v -> {
+            Intent intent = new Intent(Login.this, Enroll.class);
+            startActivity(intent);
         });
 
         // Lógica para mostrar u ocultar la contraseña
         checkBoxShowPassword.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                // Mostrar la contraseña
                 editTextPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
             } else {
-                // Ocultar la contraseña
                 editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             }
-            // Mover el cursor al final del texto
             editTextPassword.setSelection(editTextPassword.getText().length());
         });
 
@@ -71,13 +82,20 @@ public class Login extends AppCompatActivity {
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(Login.this, "Por favor, ingresa tus credenciales", Toast.LENGTH_SHORT).show();
             } else {
-                // Aquí puedes agregar tu lógica para iniciar sesión
-                // Por ejemplo, verificar las credenciales
-
-                // Si el inicio de sesión es exitoso, redirigir a otra actividad
-                Intent intent = new Intent(Login.this, Main.class); // Cambia 'Main.class' a la actividad que desees
-                startActivity(intent);
-                finish(); // Cierra la actividad actual
+                // Autenticar al usuario con Firebase
+                auth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                // Inicio de sesión exitoso
+                                Toast.makeText(Login.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Login.this, Main.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                // Manejo de errores
+                                Toast.makeText(Login.this, "Error al iniciar sesión: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
             }
         });
     }
